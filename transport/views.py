@@ -13,17 +13,27 @@ def request_transport(request):
             if data["insurance_provider"] == "Medicare":
                 return render(request, "thank_you.html", {"medicare": True})
 
-            # Store form data in the session for later logging
+            # Store form data for later logging
             request.session["request_data"] = data
 
-            # Get 3 cheapest vendors
-            vendors = TransportVendor.objects.all().order_by("price")[:3]
+            # --- New logic: if no medical necessity, suggest Uber/Lyft ---
+            if data["medical_necessity"] == "None":
+                vendors = [
+                    {"name": "Uber", "price": "Market rate", "eta": "≈ <15 min"},
+                    {"name": "Lyft", "price": "Market rate", "eta": "≈ <15 min"},
+                ]
+            else:
+                # Default: 3 cheapest medical vendors from the DB
+                vendors = list(
+                    TransportVendor.objects.all()
+                    .order_by("price")
+                    .values("name", "price", "eta")[:3]
+                )
 
             return render(request, "results.html", {"vendors": vendors, "data": data})
 
-    else:
-        form = TransportRequestForm()
-
+    # GET request – show blank form
+    form = TransportRequestForm()
     return render(request, "request_form.html", {"form": form})
 
 
