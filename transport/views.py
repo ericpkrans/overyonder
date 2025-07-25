@@ -8,6 +8,8 @@ def request_transport(request):
         form = TransportRequestForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
+            print("DEBUG‑NEC:", data["medical_necessity"])
+
 
             # Medicare redirect
             if data["insurance_provider"] == "Medicare":
