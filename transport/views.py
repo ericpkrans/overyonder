@@ -8,7 +8,7 @@ def request_transport(request):
         form = TransportRequestForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-            print("DEBUG‑NEC:", data["medical_necessity"])
+           
 
 
             # Medicare redirect
@@ -19,7 +19,7 @@ def request_transport(request):
             request.session["request_data"] = data
 
             # --- New logic: if no medical necessity, suggest Uber/Lyft ---
-            if data["medical_necessity"] == "No medical necessity":
+            if data["medical_necessity"] == "None":
                 vendors = list(
                     TransportVendor.objects.filter(name__in=["Uber", "Lyft"])
                     .values("id", "name", "price", "eta")
