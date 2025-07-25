@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Confirmation{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <div class="alert alert-success text-center">
+      {% if medicare %}
+          <h4 class="mb-2">Medicare redirect</h4>
+          <p>Please complete this request in Modivcare.</p>
+      {% else %}
+          <h4 class="mb-2">Request Logged</h4>
+          <p>You selected <strong>{{ vendor.name }}</strong> for ${{ vendor.price }}.</p>
+          {% if reason %}
+              <p><em>Justification:</em> {{ reason }}</p>
+          {% endif %}
+      {% endif %}
+    </div>
+
+    <div class="text-center">
+      <a href="{% url 'home' %}" class="btn btn-oy-gold">Submit another request</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

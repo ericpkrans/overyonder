@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Select Vendor{% endblock %}
+
+{% block content %}
+<h1 class="mb-4 text-center">Top 3 Lowest‑Cost Vendors</h1>
+
+<table class="table table-striped">
+  <thead class="table-warning">
+    <tr>
+      <th>Vendor</th><th>Price ($)</th><th>ETA</th><th></th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for v in vendors %}
+    <tr>
+      <td>{{ v.name }}</td>
+      <td>{{ v.price }}</td>
+      <td>{{ v.eta }}</td>
+      <td>
+        <a href="{% url 'select_vendor' v.id %}" class="btn btn-oy-gold btn-sm">Choose</a>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+<a href="{% url 'home' %}" class="btn btn-link">Start a new request</a>
+{% endblock %}

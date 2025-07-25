@@ -1,0 +1,37 @@
+/* --- OverYonder Theme (Purple & Gold) --- */
+:root {
+  --oy-purple: #6f42c1;   /* Primary purple */
+  --oy-gold:   #ffc107;   /* Accent gold */
+}
+
+/* HEADINGS & LINKS */
+h1, h2, h3, h4, h5 { color: var(--oy-purple); }
+a { color: var(--oy-purple); }
+a:hover { color: #542f9c; }
+
+/* BUTTONS */
+.btn-oy-primary {
+  background-color: var(--oy-purple);
+  border-color: var(--oy-purple);
+  color: #fff;
+}
+.btn-oy-primary:hover {
+  background-color: #542f9c;
+  border-color: #542f9c;
+}
+
+.btn-oy-gold {
+  background-color: var(--oy-gold);
+  border-color: var(--oy-gold);
+  color: #212529;
+}
+.btn-oy-gold:hover {
+  background-color: #e6ac06;
+  border-color: #e6ac06;
+}
+
+/* CARD SHADOW */
+.card {
+  border: 1px solid rgba(0,0,0,.08);
+  box-shadow: 0 2px 6px rgba(0,0,0,.04);
+}

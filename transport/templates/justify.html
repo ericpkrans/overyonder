@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Justify Choice{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <h1 class="mb-3 text-center">Why choose {{ vendor.name }} (${{ vendor.price }})?</h1>
+
+    <form method="post" class="card p-4">
+      {% csrf_token %}
+      <textarea name="reason" class="form-control mb-3" rows="4" placeholder="Enter justification" required></textarea>
+      <button type="submit" class="btn btn-oy-primary w-100">Submit Justification</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
