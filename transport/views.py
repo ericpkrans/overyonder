@@ -18,11 +18,29 @@ def request_transport(request):
 
             # --- New logic: if no medical necessity, suggest Uber/Lyft ---
             if data["medical_necessity"] == "None":
-                print("DEBUG‑UL: branch entered")
-                vendors = list(
-                    TransportVendor.objects.filter(name__in=["Uber", "Lyft"])
-                    .values("id", "name", "price", "eta")
-                )
+                # Try to fetch from DB first
+                ul_qs = TransportVendor.objects.filter(
+                    name__in=["Uber", "Lyft"]
+                ).values("id", "name", "price", "eta")
+
+                if ul_qs.exists():
+                    vendors = list(ul_qs)
+                else:
+                    # Fallback: static entries so table is never empty
+                    vendors = [
+                        {
+                            "id": 0,
+                            "name": "Uber",
+                            "price": "Market rate",
+                            "eta": "<15 min",
+                        },
+                        {
+                            "id": 0,
+                            "name": "Lyft",
+                            "price": "Market rate",
+                            "eta": "<15 min",
+                        },
+                    ]
             else:
                 vendors = list(
                     TransportVendor.objects.all()
@@ -39,7 +57,7 @@ def request_transport(request):
 
 def select_vendor(request, vendor_id):
     vendor = get_object_or_404(TransportVendor, id=vendor_id)
-    cheapest_price = TransportVendor.objects.order_by("price").first().price  # cheapest in DB
+    cheapest_price = TransportVendor.objects.order_by("price").first().price
 
     # Retrieve original request data
     data = request.session.get("request_data", {})
