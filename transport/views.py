@@ -18,6 +18,7 @@ def request_transport(request):
 
             # --- New logic: if no medical necessity, suggest Uber/Lyft ---
             if data["medical_necessity"] == "None":
+                print("DEBUG‑UL: branch entered")
                 vendors = list(
                     TransportVendor.objects.filter(name__in=["Uber", "Lyft"])
                     .values("id", "name", "price", "eta")
