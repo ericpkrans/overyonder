@@ -16,14 +16,9 @@
       <td>{{ v.name }}</td>
       <td>{{ v.price }}</td>
       <td>{{ v.eta }}</td>
-
       <td>
-        {% if v.id %}
-          <a href="{% url 'select_vendor' v.id %}"
-             class="btn btn-oy-gold btn-sm">Choose</a>
-        {% else %}
-          <span class="text-muted">Book in Uber/Lyft app</span>
-        {% endif %}
+        <a href="{% url 'select_vendor' v.id %}?name={{ v.name }}"
+           class="btn btn-oy-gold btn-sm">Choose</a>
       </td>
     </tr>
   {% endfor %}
