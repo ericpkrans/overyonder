@@ -2,37 +2,38 @@
 {% block title %}Request Received{% endblock %}
 
 {% block content %}
-  <h1 class="mb-4 text-center">Request Received</h1>
+<h1 class="mb-4 text-center">Request Received</h1>
 
-  {# ───────── Medicare branch ───────── #}
-  {% if medicare %}
-    <p class="lead">
-      This patient has Medicare. Transport must be scheduled through
-      <strong>Modivcare</strong>. Click the button below to open the Modivcare
-      portal in a new tab.
-    </p>
+{% if medicare %}
+  <p class="lead">
+    This patient has Medicare. Click below to schedule through Modivcare.
+  </p>
 
+  <p>
     <a href="{{ modiv_url }}" target="_blank"
-       class="btn btn-primary mb-3">
-      Open Modivcare Portal
-    </a>
+       class="btn btn-primary mb-3">Open Modivcare Portal</a>
+  </p>
 
-  {# ───────── Uber / Lyft fallback ──── #}
-  {% elif vendor_name %}
-    <p class="lead">
-      Choice recorded: <strong>{{ vendor_name }}</strong> will be used.
-      Please complete the booking in the {{ vendor_name }} app.
-    </p>
+  <p>
+    <a href="{% url 'home' %}" class="btn btn-link">Submit another request</a>
+  </p>
 
-  {# ───────── Normal vendor ─────────── #}
-  {% else %}
-    <p class="lead">
-      Choice recorded: <strong>{{ vendor.name }}</strong> has been scheduled.
-    </p>
-    {% if reason %}
-      <p><em>Justification:</em> {{ reason }}</p>
-    {% endif %}
+{% elif vendor_name %}
+  <p class="lead">
+    Choice recorded: <strong>{{ vendor_name }}</strong>.
+    Please complete the booking in the {{ vendor_name }} app.
+  </p>
+
+  <a href="{% url 'home' %}" class="btn btn-link">Submit another request</a>
+
+{% else %}
+  <p class="lead">
+    Choice recorded: <strong>{{ vendor.name }}</strong>.
+  </p>
+  {% if reason %}
+    <p><em>Justification:</em> {{ reason }}</p>
   {% endif %}
 
   <a href="{% url 'home' %}" class="btn btn-link">Submit another request</a>
+{% endif %}
 {% endblock %}
