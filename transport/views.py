@@ -8,6 +8,8 @@ def request_transport(request):
         form = TransportRequestForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
+            print("NEC‑DEBUG:", repr(data["medical_necessity"]))
+
            
 
 
