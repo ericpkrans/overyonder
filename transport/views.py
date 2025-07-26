@@ -8,16 +8,12 @@ def request_transport(request):
         form = TransportRequestForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-            print("NEC‑DEBUG:", repr(data["medical_necessity"]))
-
-           
-
 
             # Medicare redirect
             if data["insurance_provider"] == "Medicare":
                 return render(request, "thank_you.html", {"medicare": True})
 
-                        # Store form data for later logging
+            # Store form data for later logging
             request.session["request_data"] = data
 
             # --- New logic: if no medical necessity, suggest Uber/Lyft ---
@@ -33,9 +29,6 @@ def request_transport(request):
                     .values("id", "name", "price", "eta")[:3]
                 )
 
-
-
-
             return render(request, "results.html", {"vendors": vendors, "data": data})
 
     # GET request – show blank form
@@ -45,9 +38,7 @@ def request_transport(request):
 
 def select_vendor(request, vendor_id):
     vendor = get_object_or_404(TransportVendor, id=vendor_id)
-    cheapest_price = (
-        TransportVendor.objects.order_by("price").first().price
-    )  # cheapest in DB
+    cheapest_price = TransportVendor.objects.order_by("price").first().price  # cheapest in DB
 
     # Retrieve original request data
     data = request.session.get("request_data", {})
@@ -72,7 +63,7 @@ def select_vendor(request, vendor_id):
         # More expensive → ask for justification
         return render(request, "justify.html", {"vendor": vendor})
 
-        # Cheapest choice → save immediately with empty justification
+    # Cheapest choice → save immediately with empty justification
     AuditLog.objects.create(
         pickup_location=data.get("pickup_location", "N/A"),
         dropoff_location=data.get("dropoff_location", "N/A"),
