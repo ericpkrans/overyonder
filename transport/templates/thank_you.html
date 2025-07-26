@@ -1,25 +1,38 @@
 {% extends "base.html" %}
-{% block title %}Confirmation{% endblock %}
+{% block title %}Request Received{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-  <div class="col-md-8 col-lg-6">
-    <div class="alert alert-success text-center">
-      {% if medicare %}
-          <h4 class="mb-2">Medicare redirect</h4>
-          <p>Please complete this request in Modivcare.</p>
-      {% else %}
-          <h4 class="mb-2">Request Logged</h4>
-          <p>You selected <strong>{{ vendor.name }}</strong> for ${{ vendor.price }}.</p>
-          {% if reason %}
-              <p><em>Justification:</em> {{ reason }}</p>
-          {% endif %}
-      {% endif %}
-    </div>
+  <h1 class="mb-4 text-center">Request Received</h1>
 
-    <div class="text-center">
-      <a href="{% url 'home' %}" class="btn btn-oy-gold">Submit another request</a>
-    </div>
-  </div>
-</div>
+  {# ───────── Medicare branch ───────── #}
+  {% if medicare %}
+    <p class="lead">
+      This patient has Medicare. Transport must be scheduled through
+      <strong>Modivcare</strong>. Click the button below to open the Modivcare
+      portal in a new tab.
+    </p>
+
+    <a href="{{ modiv_url }}" target="_blank"
+       class="btn btn-primary mb-3">
+      Open Modivcare Portal
+    </a>
+
+  {# ───────── Uber / Lyft fallback ──── #}
+  {% elif vendor_name %}
+    <p class="lead">
+      Choice recorded: <strong>{{ vendor_name }}</strong> will be used.
+      Please complete the booking in the {{ vendor_name }} app.
+    </p>
+
+  {# ───────── Normal vendor ─────────── #}
+  {% else %}
+    <p class="lead">
+      Choice recorded: <strong>{{ vendor.name }}</strong> has been scheduled.
+    </p>
+    {% if reason %}
+      <p><em>Justification:</em> {{ reason }}</p>
+    {% endif %}
+  {% endif %}
+
+  <a href="{% url 'home' %}" class="btn btn-link">Submit another request</a>
 {% endblock %}
